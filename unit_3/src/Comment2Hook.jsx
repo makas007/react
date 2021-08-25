@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react"
-import CommentsListHook from './src/CommentsListHook'
+import CommentsListHook from './CommentsListHook'
 
 function Comment2Hook() {
   const [userId, setUserId] = useState(1)

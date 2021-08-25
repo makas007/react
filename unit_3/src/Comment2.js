@@ -29,7 +29,7 @@ class Comment2 extends Component {
                     <option value="4">4</option>
                 </select>
                 <div>
-                    {this.state.data}
+                    <CommentsListHook data={this.state.data}/>
                 </div>
             </div>
         );
