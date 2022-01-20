@@ -47,6 +47,19 @@ input.main-input {
 }
 
 /*Currencies*/
+
+.name-rate{
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  border-bottom: 0.5px solid black;
+}
+.name {
+  margin-right: 10px;
+}
+.rate {
+  font-weight: bold;
+}
 .current-option {
   display: flex;
   flex-direction: column;

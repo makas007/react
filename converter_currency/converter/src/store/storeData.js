@@ -11,7 +11,8 @@ export const getAllRates = createAsyncThunk(
 const storeData = createSlice({
   name: 'myStore',
   initialState: {
-    allCurrencies: {}
+    allCurrencies: {},
+    selectedDefault: 'UAH'
   },
   reducers:{
     currencies(state, action){
@@ -28,4 +29,4 @@ const storeData = createSlice({
 })
 
 export default storeData.reducer;
-export const {allCurrencies} = storeData.actions
+export const {allCurrencies, selectedDefault} = storeData.actions
