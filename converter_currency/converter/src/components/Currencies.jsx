@@ -17,6 +17,10 @@ function Currencies() {
     console.log('useeffect');
   },[])
 
+  useEffect(() => {
+    dispatch(getAllRates())
+  },[dispatch])
+
 
 
   function convert(name){

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
-import axios from 'axios';
 import { getAllRates } from "../store/storeData";
 import { useDispatch, useSelector } from "react-redux"
 
@@ -13,35 +12,35 @@ function Main() {
   const [objWithParam, setObjWithParam] = useState();
   const dispatch = useDispatch();
   const allCurrencies = useSelector(state => state.storeData.allCurrencies)
+  // const [qwe, setQwe] = useState()
 
 
   useEffect(() => {
-    // getCurrecyReq();
     dispatch(getAllRates())
   },[dispatch])
 
   function getResult(e){
+      
     
-    if(e.key === 'Enter'){
-      let numPattern  = /(\b\d+\.\d+\b)|\d+/g;
-      let num = inputValue.match(numPattern)
-      let numFrom = num[0].length
-      let numTo = inputValue.indexOf('in') + 2;
-      let params = {
-        value: num[0],
-        from: inputValue.substr(numFrom, 4).trim().toUpperCase(),
-        to: inputValue.substr(numTo, 4).trim().toUpperCase()
-      }
-      console.log(params);
-      setObjWithParam(params)
-  
-      if(params.from === 'RUB' || params.to === 'RUB'){
-        convertWithRub(params);
-      } else {
-        convertWithoutRub(params);
-      }
-      setIsOk(true)
+    let numPattern  = /(\b\d+\.\d+\b)|\d+/g;
+    let num = inputValue.match(numPattern)
+    let numFrom = num[0].length
+    let numTo = inputValue.indexOf('in') + 2;
+    let params = {
+      value: num[0],
+      from: inputValue.substr(numFrom, 4).trim().toUpperCase(),
+      to: inputValue.substr(numTo, 4).trim().toUpperCase()
     }
+    console.log(params);
+    setObjWithParam(params)
+
+    if(params.from === 'RUB' || params.to === 'RUB'){
+      convertWithRub(params);
+    } else {
+      convertWithoutRub(params);
+    }
+    setIsOk(true)
+    
   }
   function convertWithRub(obj) {
     if(obj.from === 'RUB'){
@@ -62,12 +61,20 @@ function Main() {
     setConvertResult(num.toFixed(2))
   }
 
-  // function getCurrecyReq(){
-  //   axios.get('https://www.cbr-xml-daily.ru/latest.js').then((responce) => {
-  //     setCurrencies(responce.data.rates)
-  //   })
-  //   console.log('request');
+  // function debounce(fn, ms){
+  //   let timeout;
+  //   return function(){
+  //     function fnCall(){
+  //       fn.apply(this, arguments)
+  //     }
+  //     clearTimeout(timeout)
+  //     timeout = setTimeout(fnCall, ms)
+  //   }
   // }
+
+
+
+
 
 
 
@@ -75,8 +82,9 @@ function Main() {
      <div className="wrapper-main">
       <p>Enter request for example: <i>100 usd <b>in</b> eur</i></p>
       <div className="main">
-        <input type="text" placeholder="Enter your request" className="main-input" onChange={e => setInputValue(e.target.value)} onKeyPress={getResult}/>
+        <input type="text" placeholder="Enter your request" className="main-input" onChange={e => setInputValue(e.target.value)}/>
         <button className="btn" onClick={getResult} >GO</button>
+
 
       </div>
       <div className="view-currency">
