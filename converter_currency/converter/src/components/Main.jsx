@@ -1,29 +1,37 @@
-import React, { useCallback } from "react";
+import React, { useMemo } from "react";
 import { useState, useEffect } from "react";
 import { getAllRates } from "../store/storeData";
 import { useDispatch, useSelector } from "react-redux"
 
 
+let d = null;
+
+
 function Main() {
-  const [inputValue, setInputValue] = useState();
-  // const [currencies, setCurrencies] = useState();
+  const [inputValue, setInputValue] = useState('');
+
   const [convertResult, setConvertResult] = useState();
   const [isOk, setIsOk] = useState(false);
   const [objWithParam, setObjWithParam] = useState();
   const dispatch = useDispatch();
   const allCurrencies = useSelector(state => state.storeData.allCurrencies)
-  // const [qwe, setQwe] = useState()
+
 
 
   useEffect(() => {
     dispatch(getAllRates())
   },[dispatch])
 
-  function getResult(e){
-      
-    
+
+
+
+  const getResult = () => {
     let numPattern  = /(\b\d+\.\d+\b)|\d+/g;
     let num = inputValue.match(numPattern)
+
+    console.log(inputValue, 'log inputaaaa');
+    console.log(num, 'num in result');
+    
     let numFrom = num[0].length
     let numTo = inputValue.indexOf('in') + 2;
     let params = {
@@ -42,6 +50,8 @@ function Main() {
     setIsOk(true)
     
   }
+
+
   function convertWithRub(obj) {
     if(obj.from === 'RUB'){
       let a = obj.value * allCurrencies[obj.to]
@@ -61,17 +71,16 @@ function Main() {
     setConvertResult(num.toFixed(2))
   }
 
-  // function debounce(fn, ms){
-  //   let timeout;
-  //   return function(){
-  //     function fnCall(){
-  //       fn.apply(this, arguments)
-  //     }
-  //     clearTimeout(timeout)
-  //     timeout = setTimeout(fnCall, ms)
-  //   }
-  // }
 
+  
+  const myDebounce = useMemo(() => {
+    if(inputValue) {
+      clearTimeout(d);
+      d = setTimeout(() => {
+        getResult();
+    }, 1000)
+    }
+  }, [inputValue])
 
 
 
@@ -82,16 +91,17 @@ function Main() {
      <div className="wrapper-main">
       <p>Enter request for example: <i>100 usd <b>in</b> eur</i></p>
       <div className="main">
-        <input type="text" placeholder="Enter your request" className="main-input" onChange={e => setInputValue(e.target.value)}/>
+        <input type="text" placeholder="Enter your request" className="main-input" onChange={(e) => {
+          setInputValue(e.target.value);
+        }}/>
         <button className="btn" onClick={getResult} >GO</button>
-
-
       </div>
       <div className="view-currency">
         {isOk && 
           <h2>{objWithParam.value} {objWithParam.from} = {convertResult} {objWithParam.to} </h2>
         }
       </div>
+
      </div>
     
   )
