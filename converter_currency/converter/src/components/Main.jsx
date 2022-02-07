@@ -9,7 +9,7 @@ let d = null;
 
 function Main() {
   const [inputValue, setInputValue] = useState('');
-
+  const [example, setExample] = useState(false)
   const [convertResult, setConvertResult] = useState();
   const [isOk, setIsOk] = useState(false);
   const [objWithParam, setObjWithParam] = useState();
@@ -26,19 +26,29 @@ function Main() {
 
 
   const getResult = () => {
+    setExample(false)
     let numPattern  = /(\b\d+\.\d+\b)|\d+/g;
     let num = inputValue.match(numPattern)
-
-    console.log(inputValue, 'log inputaaaa');
-    console.log(num, 'num in result');
-    
+    console.log(parseInt(num));
+    if(!parseInt(num)) {
+      setExample(true)
+      return false
+    } 
     let numFrom = num[0].length
     let numTo = inputValue.indexOf('in') + 2;
+
+
     let params = {
       value: num[0],
       from: inputValue.substr(numFrom, 4).trim().toUpperCase(),
       to: inputValue.substr(numTo, 4).trim().toUpperCase()
     }
+
+    if(!Object.keys(allCurrencies).includes(params.from) || !Object.keys(allCurrencies).includes(params.to)){
+      console.log('ifka ');
+      setExample(true)
+      return false;
+    };
     console.log(params);
     setObjWithParam(params)
 
@@ -91,10 +101,19 @@ function Main() {
      <div className="wrapper-main">
       <p>Enter request for example: <i>100 usd <b>in</b> eur</i></p>
       <div className="main">
-        <input type="text" placeholder="Enter your request" className="main-input" onChange={(e) => {
-          setInputValue(e.target.value);
-        }}/>
-        <button className="btn" onClick={getResult} >GO</button>
+        <div className={'main-for-btn'}>
+          <input type="text" placeholder="Enter your request" className="main-input" onChange={(e) => {
+
+            setInputValue(e.target.value);
+          }}/> 
+          <button className={`btn ${inputValue.length > 3? 'btnActive' : ''}`} onClick={getResult} >GO</button>
+        </div>
+
+      </div>
+      <div className="error">
+        {example && 
+          <h2>Incorrect entered data</h2>
+        }
       </div>
       <div className="view-currency">
         {isOk && 

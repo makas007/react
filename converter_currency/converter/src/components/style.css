@@ -29,6 +29,13 @@
   width: 100%;
   align-items: center;
 }
+.main-for-btn {
+  overflow: hidden;
+  width: 239px;
+  position: absolute;
+}
+
+
 input.main-input {
   height: 25px;
   width: 28vmin;
@@ -43,7 +50,12 @@ input.main-input {
   margin: 0px;
   color: white;
   border: 0;
-  border-radius: 10%;
+  transform: translate(240px, -30px);
+  transition: all .5s ease-out;
+}
+.btnActive{
+  transform: translate(193px, -30px);
+  transition: all .5s ease-out;
 }
 
 /*Currencies*/
